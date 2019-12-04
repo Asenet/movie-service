@@ -3,10 +3,9 @@ package pl.asenet.movie.domain.service.converter;
 /**
  * @author Tomasz Szymeczek
  */
-public interface DtoConverter<M, T> {
+public interface ResourceConverter<M, T> {
 
-    T toDto(M m);
-
-    M fromDto(T t);
+    T toResource(M m);
+    M fromResource(T t);
 
 }
