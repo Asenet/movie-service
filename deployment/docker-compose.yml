@@ -1,0 +1,34 @@
+  version: "3"
+
+  services:
+    movie-mongodb:
+      container_name: "movie-mongodb"
+      image: "mongo:3.6"
+      environment:
+        - MONGO_DATA_DIR=/data/db
+        - MONGO_LOG_DIR=/dev/null
+      ports:
+        - 27017:27017
+      command: "mongod"
+
+    movie-nginx:
+      container_name: "movie-nginx"
+      image: nginx:latest
+      ports:
+        - "9002:80"
+      volumes:
+        - ./appdata:/usr/share/nginx/html/static
+
+    movie-service:
+      container_name: "movie-service"
+      image: "movie-service"
+      build:
+        context: ../
+        dockerfile: Dockerfile
+      volumes:
+        - ./appdata:/usr/share/nginx/html/static
+      ports:
+        - "8002:8001"
+      depends_on:
+        - movie-mongodb
+        - movie-nginx
